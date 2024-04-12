@@ -1,5 +1,6 @@
 [GLOBAL]
-pants_version = "2.18.0"
+pants_version = "2.20.0"
+build_file_prelude_globs = ["build-support/pants/macros/*.py"]
 
 backend_packages = [
   "pants.backend.docker",
@@ -22,9 +23,29 @@ repo_id = "B573B56B-6289-40C5-ADB7-4C5FA659EAD1"
 
 
 [python]
-# We use a narrow interpreter constraint to ensure that Python PEX'es will be executable by our
-# selected Docker base image, `python:3.8`.
-interpreter_constraints = ["==3.8.*"]
+pip_version = "23.3.2"
+enable_resolves = true
+interpreter_constraints = ["CPython==3.10.*"]
+default_resolve = "default"
 
 [python-infer]
 use_rust_parser = true
+
+
+[python.resolves]
+default = "3rdparty/py/default.lock"
+
+[python-repos]
+find_links = ["file:///tmp/psutil"]
+
+[pex-cli]
+version = "v2.1.161"
+known_versions = [
+  "v2.1.161|macos_arm64 |5bb08a677d309889b3357cd23a3a95945a4c3438cfb00ece5291dcfe89221fcc|3675619",
+  "v2.1.161|macos_x86_64|5bb08a677d309889b3357cd23a3a95945a4c3438cfb00ece5291dcfe89221fcc|3675619",
+  "v2.1.161|linux_x86_64|5bb08a677d309889b3357cd23a3a95945a4c3438cfb00ece5291dcfe89221fcc|3675619",
+  "v2.1.161|linux_arm64 |5bb08a677d309889b3357cd23a3a95945a4c3438cfb00ece5291dcfe89221fcc|3675619",
+]
+
+[python.resolves_to_only_binary]
+default = ["psutil"]

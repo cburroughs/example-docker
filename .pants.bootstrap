@@ -1,0 +1,9 @@
+export LOCALDEV_COMMIT_SHA=$(git rev-parse HEAD)
+export LOCALDEV_COMMIT_SHORT_SHA=$(git rev-parse --short HEAD)
+export LOCALDEV_COMMIT_BRANCH=$(git symbolic-ref --short -q HEAD)
+export LOCALDEV_COMMIT_AUTHOR_EMAIL=$(git show -s --format='%ae' ${LOCALDEV_COMMIT_SHA})
+if git diff-index --quiet HEAD --; then
+    export LOCALDEV_COMMIT_DIRTY="false"
+else
+    export LOCALDEV_COMMIT_DIRTY="true"
+fi
